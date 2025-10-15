@@ -36,6 +36,17 @@ const Navbar = () => {
                             Треки
                         </Typography>
                     </Link>
+                    <Link to="/genre" style={{ flexGrow: 34 }}>
+                        <Typography variant="h6" component="div">
+                            Жанри
+                        </Typography>
+                    </Link>
+
+                    <Link to="/trackadd" style={{ flexGrow: 34 }}>
+                        <Typography variant="h6" component="div">
+                            Треки Додавання
+                        </Typography>
+                    </Link>
                     {!isAuth ? (
                         <Link to="/login">
                             <Button color="inherit">Login</Button>
@@ -46,6 +57,8 @@ const Navbar = () => {
                             <Button onClick={logoutHanlder} color="inherit">Logout</Button>
                         </Box>
                     )}
+                    
+                    
                 </Toolbar>
             </AppBar>
         </Box>

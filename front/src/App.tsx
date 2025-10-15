@@ -6,6 +6,8 @@ import LoginPage from "./pages/auth/LoginPage";
 import { login } from "./store/slices/authSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import GanrePage from "./pages/GanrePage/GanrePage";
+import TrackAddPage from "./pages/TrackAddPage/TrackAddPage"
 
 function App() {
     const dispatch = useDispatch();
@@ -22,6 +24,8 @@ function App() {
             <Route path="/" element={<DefaultLayout />}>
                 <Route index element={<MainPage />} />
                 <Route path="login" element={<LoginPage />} />
+                <Route path="genre" element={<GanrePage />} />
+                <Route path="trackadd" element={<TrackAddPage />} />
             </Route>
         </Routes>
     );
