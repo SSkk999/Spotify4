@@ -15,8 +15,27 @@ export const GenreApi = createApi({
             }),
             providesTags:['genres']
 
-        })
+        }),
+        deleteGenres:build.mutation<ServiceResponse,string>({
+                query: (id) => ({
+                url: `genre/?id=${id}`,
+                method: 'delete',
+                
+            }),
+            invalidatesTags: ['genres']
+        }),
+        
+        getGenreId:build.query<ServiceResponse,string>({
+            query:(id) => ({
+                url:`genre/by-id?id=${id}`,
+                method:'get'
+            }),
+            providesTags:['genres']
+
+        }),
+
+    
 
     })
 })
-export const { useGetGenresQuery } = GenreApi
+export const { useGetGenresQuery , useDeleteGenresMutation,useGetGenreIdQuery} = GenreApi

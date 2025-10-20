@@ -18,16 +18,20 @@ import {
     FacebookIcon,
     SitemarkIcon,
 } from "./components/CustomIcons";
-import { useState } from "react";
+import {  useState } from "react";
 import { useFormik } from "formik";
-import type { Login } from "./types";
-import axios from "axios";
-import { login } from "../../store/slices/authSlice";
-import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { apiUrl } from "../../env";
 
+import axios from "axios";
+import { useNavigate } from "react-router";
+import {useGetGenreIdQuery } from "../../store/services/GenreApi/GenreApi";
+import { apiUrl } from "../../env";
+import type { Genre } from "./types";
+import { useAppSelector } from "../../hooks/hooks";
+import {useGetGenresQuery } from "../../store/services/GenreApi/GenreApi";
 const Card = styled(MuiCard)(({ theme }) => ({
+
+
+
     display: "flex",
     flexDirection: "column",
     alignSelf: "center",
@@ -69,16 +73,23 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     },
 }));
 
-const LoginPage = () => {
+const GenreRenema = () => {
+    const {value} = useAppSelector((state) => state.idGenre);
+    const {data} = useGetGenreIdQuery(value)
     const [open, setOpen] = useState(false);
+    const {refetch } = useGetGenresQuery(null);
+      const navigate = useNavigate();
 
-    const initValues: Login = {
-        login: "",
-        password: "",
+
+   
+    const initValues: Genre = {
+    Id : value,
+    Name: data?.payload.name,
+  
     };
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -88,17 +99,24 @@ const LoginPage = () => {
         setOpen(false);
     };
 
-    const handleSubmit = async (values: Login) => {
+    const handleSubmit = async (values: Genre) => {
+
+       
+
+    
         try {
-            const response = await axios.post(
-                `${apiUrl}/auth/login`,
-                values
+            const response = await axios.put(
+                `${apiUrl}/genre`,{
+                id: value,
+                name: values.Name,
+                }
+                 
             );
             const { data } = response;
-            const token = data.payload;
-            dispatch(login(token));
-            navigate("/", { replace: true });
 
+            console.log(data)
+            navigate("/genre")
+            refetch();
         } catch (error) {
             console.log(error);
         }
@@ -123,7 +141,7 @@ const LoginPage = () => {
                             fontSize: "clamp(2rem, 10vw, 2.15rem)",
                         }}
                     >
-                        Sign in
+                        Змінюємо-{data?.payload.name}
                     </Typography>
                     <Box
                         component="form"
@@ -136,38 +154,23 @@ const LoginPage = () => {
                             gap: 2,
                         }}
                     >
+                       
                         <FormControl>
-                            <FormLabel htmlFor="login">Login</FormLabel>
+                            <FormLabel htmlFor="Name">Name</FormLabel>
                             <TextField
-                                id="login"
+                                name="Name"
+                                placeholder="Name"
+                                defaultValue={data?.payload.name || ""}
                                 type="text"
-                                name="login"
-                                placeholder="login"
-                                autoComplete="username"
                                 autoFocus
                                 required
                                 fullWidth
                                 variant="outlined"
                                 onChange={formik.handleChange}
-                                value={formik.values.login}
+                                value={formik.values.Name}
                             />
                         </FormControl>
-                        <FormControl>
-                            <FormLabel htmlFor="password">Password</FormLabel>
-                            <TextField
-                                name="password"
-                                placeholder="••••••"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                                autoFocus
-                                required
-                                fullWidth
-                                variant="outlined"
-                                onChange={formik.handleChange}
-                                value={formik.values.password}
-                            />
-                        </FormControl>
+                         
                         <FormControlLabel
                             control={
                                 <Checkbox value="remember" color="primary" />
@@ -176,7 +179,7 @@ const LoginPage = () => {
                         />
                         <ForgotPassword open={open} handleClose={handleClose} />
                         <Button type="submit" fullWidth variant="contained">
-                            Sign in
+                            Renema
                         </Button>
                         <Link
                             component="button"
@@ -219,7 +222,7 @@ const LoginPage = () => {
                                 variant="body2"
                                 sx={{ alignSelf: "center" }}
                             >
-                                Sign up
+                                Renema
                             </Link>
                         </Typography>
                     </Box>
@@ -229,4 +232,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default GenreRenema;

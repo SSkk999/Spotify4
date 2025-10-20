@@ -3,11 +3,12 @@ import authRecuder from "./slices/authSlice";
 import countRecuder from "./slices/countSlice";
 import { trackApi } from "./services/trackApi";
 import { GenreApi } from "./services/GenreApi/GenreApi";
-
+import genreIdsportReducer from "./slices/idgenre"
 export const store = configureStore({
     reducer: {
         'auth': authRecuder,
         'count': countRecuder,
+        'idGenre': genreIdsportReducer,
         [trackApi.reducerPath]: trackApi.reducer,
         [GenreApi.reducerPath]: GenreApi.reducer
     },

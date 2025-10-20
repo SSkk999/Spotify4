@@ -22,9 +22,8 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import type { Track } from "./types";
 import axios from "axios";
-import { login } from "../../store/slices/authSlice";
-import { data, useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+
+
 import { apiUrl } from "../../env";
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -81,8 +80,7 @@ const LoginPage = () => {
     GenreId: ""
     };
 
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+ 
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -101,7 +99,7 @@ const LoginPage = () => {
         formData.append("GenreId", values.GenreId);
 
     if (values.AudioFile) {
-      formData.append("AudioFile", values.AudioFile); // тут саме файл
+      formData.append("AudioFile", values.AudioFile); 
     }
         try {
             const response = await axios.post(
